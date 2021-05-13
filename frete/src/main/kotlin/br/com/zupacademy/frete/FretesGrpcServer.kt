@@ -1,5 +1,6 @@
 package br.com.zupacademy.frete
 
+import com.google.protobuf.Any
 import com.google.rpc.Code
 import io.grpc.Status
 import io.grpc.protobuf.StatusProto
@@ -29,6 +30,21 @@ class FreteGrpcServer : FreteServiceGrpc.FreteServiceImplBase() {
                 .withDescription("cep deve estar em formato válido")
                 .augmentDescription("formato esperado deve ser 99999-999")
                 .asRuntimeException()
+            responseObserver?.onError(error)
+        } else if (cep.endsWith("333")) {
+            // simulando um erro de segurança
+            val statusProto = com.google.rpc.Status.newBuilder()
+                .setCode(Code.PERMISSION_DENIED.number)
+                .setMessage("usuário não pode acessar esse recurso")
+                    // esses details vão como metadados da resposta e não no corpo
+                .addDetails(Any
+                    .pack(ErrorDetails.newBuilder()
+                        .setCode(401)
+                        .setMessage("não autorizado")
+                        .build()))
+                .build()
+
+            val error = StatusProto.toStatusRuntimeException(statusProto)
             responseObserver?.onError(error)
         }
 
