@@ -17,6 +17,7 @@ repositories {
 }
 
 micronaut {
+    runtime("netty") // added por causa do Health Check. Netty é o servidor HTTP
     testRuntime("junit5")
     processing {
         incremental(true)
@@ -31,6 +32,7 @@ dependencies {
     implementation("javax.annotation:javax.annotation-api")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("io.micronaut:micronaut-management") // para habilitar o Health Check
     runtimeOnly("ch.qos.logback:logback-classic")
     implementation("io.micronaut:micronaut-validation")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")

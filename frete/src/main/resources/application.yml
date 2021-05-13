@@ -1,3 +1,12 @@
 micronaut:
   application:
     name: frete
+  server:
+    port: 8081
+
+
+endpoints:
+  health:
+    enabled: true
+    sensitive: false # acessível para usuários não logados
+    details-visible: ANONYMOUS # consulte a doc para mais valores
